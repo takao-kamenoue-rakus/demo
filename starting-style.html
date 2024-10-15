@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="module">
+    const { createApp, ref, computed, useTemplateRef } = Vue
+
+    const LIST = [
+      {
+        id: 1,
+        name: 'Item 1',
+        url: '#'
+      },
+      {
+        id: 2,
+        name: 'Item 2',
+        url: '#'
+      },
+      {
+        id: 3,
+        name: 'Item 3',
+        url: '#'
+      },
+      {
+        id: 4,
+        name: 'Item 4',
+        url: '#'
+      },
+      {
+        id: 5,
+        name: 'Item 5',
+        url: '#'
+      }
+    ];
+
+    createApp({
+      setup() {
+        // dialog
+        const isShow = ref(false)
+        const dialogRef = useTemplateRef('myDialog')
+        const toggleMenu = () => {
+          if (isShow.value) {
+            dialogRef.value.close()
+          } else {
+            dialogRef.value.show()
+          }
+          isShow.value = !isShow.value
+        }
+        const message = computed(() => isShow.value ? 'とじる' : 'ひらく')
+
+        // box
+        const isTransition = ref(false)
+        const onClickBox = () => {
+          isTransition.value = !isTransition.value
+        }
+
+        return {
+          // dialog
+          LIST,
+          isShow,
+          toggleMenu,
+          message,
+          // box
+          isTransition,
+          onClickBox
+        }
+      }
+    }).mount('#app')
+  </script>
+  <style>
+    body {
+      padding: 2rem;
+    }
+    .my-dialog {
+
+      transition:
+        rotate 0.7s ease-in-out,
+        opacity 0.7s ease-in-out;
+        // ①
+        /* display: 0.7s ease-in-out allow-discrete; */
+        rotate: 0deg;
+        opacity: 1;
+
+        &[open] {
+        rotate: 30deg;
+
+        /* ② */
+        /* @starting-style {
+          opacity: 0.3;
+          rotate: 0deg;
+        } */
+      }
+    }
+
+    .box {
+      margin-top: 2rem;
+      width: 100px;
+      aspect-ratio: 1;
+      background-color: #c0ffee;
+      display: grid;
+      place-items: center;
+      transition:
+        rotate 0.7s ease-in-out,
+        opacity 0.7s ease-in-out;
+      rotate: 0;
+      opacity: 0.3;
+
+      &.active {
+        rotate: 30deg;
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <button
+        type="button"
+        aria-controls="trigger"
+        :aria-expanded="isShow"
+        :aria-label="message"
+        @click="toggleMenu"
+      >
+        {{ message }}
+      </button>
+      <dialog id="trigger" ref="myDialog" class="my-dialog">
+        <nav>
+          <ul>
+            <li v-for="(item,index) in LIST" :key="item.id">
+              <a :href="item.url" :autofocus="index === 1 && true">{{ item.name }}</a>
+            </li>
+          </ul>
+        </nav>
+    </header>
+    <div class="box" :class="{ 'active': isTransition }">
+      <button @click="onClickBox">click</button>
+    </div>
+  </div>
+</body>
+</html>
