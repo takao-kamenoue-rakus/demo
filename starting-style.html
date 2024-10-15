@@ -49,12 +49,12 @@
           }
           isShow.value = !isShow.value
         }
-        const message = computed(() => isShow.value ? 'とじる' : 'ひらく')
+        const label = computed(() => isShow.value ? 'とじる' : 'ひらく')
 
         // box
-        const isTransition = ref(false)
+        const isActive = ref(false)
         const onClickBox = () => {
-          isTransition.value = !isTransition.value
+          isActive.value = !isActive.value
         }
 
         return {
@@ -62,9 +62,9 @@
           LIST,
           isShow,
           toggleMenu,
-          message,
+          label,
           // box
-          isTransition,
+          isActive,
           onClickBox
         }
       }
@@ -127,10 +127,10 @@
         type="button"
         aria-controls="trigger"
         :aria-expanded="isShow"
-        :aria-label="message"
+        :aria-label="label"
         @click="toggleMenu"
       >
-        {{ message }}
+        {{ label }}
       </button>
       <dialog id="trigger" ref="myDialog" class="my-dialog">
         <nav>
@@ -141,7 +141,7 @@
           </ul>
         </nav>
     </header>
-    <div class="box" :class="{ 'active': isTransition }">
+    <div class="box" :class="{ 'active': isActive }">
       <button @click="onClickBox">click</button>
     </div>
   </div>
