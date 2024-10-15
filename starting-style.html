@@ -75,23 +75,24 @@
       padding: 2rem;
     }
     .my-dialog {
+      --_duration: 0.7s;
 
       transition:
-        rotate 0.7s ease-in-out,
-        opacity 0.7s ease-in-out;
-        // ①
-        /* display: 0.7s ease-in-out allow-discrete; */
-        rotate: 0deg;
-        opacity: 1;
+        rotate var(--_duration) ease-in-out,
+        opacity var(--_duration) ease-in-out,
+        display var(--_duration) ease-in-out allow-discrete;
 
-        &[open] {
+      &[open] {
         rotate: 30deg;
 
-        /* ② */
-        /* @starting-style {
+        @starting-style {
           opacity: 0.3;
           rotate: 0deg;
-        } */
+        }
+      }
+      &:not([open]) {
+        rotate: 0deg;
+        opacity: 0.3;
       }
     }
 
