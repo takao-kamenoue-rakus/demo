@@ -71,28 +71,32 @@
     }).mount('#app')
   </script>
   <style>
+    :root {
+      --opacity: 0.1;
+      --rotate: 30deg;
+      --duration: 0.7s;
+    }
     body {
       padding: 2rem;
     }
     .my-dialog {
-      --_duration: 0.7s;
 
       transition:
-        rotate var(--_duration) ease-in-out,
-        opacity var(--_duration) ease-in-out,
-        display var(--_duration) ease-in-out allow-discrete;
+        rotate var(--duration) ease-in-out,
+        opacity var(--duration) ease-in-out,
+        display var(--duration) ease-in-out allow-discrete;
 
       &[open] {
-        rotate: 30deg;
+        rotate: var(--rotate);
 
         @starting-style {
-          opacity: 0.3;
+          opacity: var(--opacity);
           rotate: 0deg;
         }
       }
       &:not([open]) {
         rotate: 0deg;
-        opacity: 0.3;
+        opacity: var(--opacity);
       }
     }
 
@@ -104,13 +108,13 @@
       display: grid;
       place-items: center;
       transition:
-        rotate 0.7s ease-in-out,
-        opacity 0.7s ease-in-out;
+        rotate var(--duration) ease-in-out,
+        opacity var(--duration) ease-in-out;
       rotate: 0;
-      opacity: 0.3;
+      opacity: var(--opacity);
 
       &.active {
-        rotate: 30deg;
+        rotate: var(--rotate);
         opacity: 1;
       }
     }
